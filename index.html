@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Women's Day</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #fdf6e3;
+  overflow: hidden;
+  perspective: 1600px;
+  position: relative;
+}
+
+.intro {
+  position: absolute; top:0; left:0;
+  width:100%; height:100vh;
+  display:flex; align-items:center; justify-content:center;
+  z-index:3;
+  transition: opacity 1.5s ease;
+}
+
+.banner {
+  position: relative;
+  background-color: #fff;
+  border-radius: 15px;
+  padding: 25px 30px;
+  max-width: 80%;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  z-index:4;
+}
+
+.banner-text { margin-bottom: 20px; font-size: 20px; color: #333; }
+.banner button {
+  background-color: #ff8c94; color: #fff; border: none; padding: 10px 25px;
+  font-size: 16px; border-radius: 8px; cursor: pointer; transition: 0.3s;
+}
+
+.banner button:hover { background-color: #ff5c5c; }
+.intro-character {
+  position: absolute; bottom:10px; right:10px;
+  max-width:20%; height:auto; pointer-events:none;
+  transition: opacity 1.5s ease;
+}
+
+.intro.fade-out .intro-character,
+.intro.fade-out .banner { opacity:0; }
+
+.petal {
+  position: absolute; width: 20px; height: 20px;
+  pointer-events: none;
+  animation: fall linear infinite;
+  transform-origin: center;
+}
+@keyframes fall {
+  0% { transform: translateY(0vh) rotate(0deg); opacity:1; }
+  100% { transform: translateY(120vh) rotate(360deg); opacity:0; }
+}
+
+.main-scene {
+  position: absolute; top:0; left:0;
+  width:100%; height:100vh;
+  display:flex; align-items:center; justify-content:center;
+  background: radial-gradient(circle at center, #fdf6e3, #f5e8d6);
+  opacity:0; z-index:2;
+  transition: opacity 1.5s ease;
+}
+.book {
+  position: relative; width: 340px; height: 460px;
+  transform-style: preserve-3d;
+}
+.cover-group {
+  position: absolute; width: 100%; height: 100%;
+  transform-style: preserve-3d;
+  transform-origin: left;
+  z-index: 3;
+}
+.front-cover, .inner-front, .back-cover {
+  position: absolute; width: 100%; height: 100%; border-radius: 6px;
+  background-size: cover; background-position: center;
+}
+.front-cover { background-image: url(''); }
+.inner-front { background-image: url('https://i.pinimg.com/736x/6a/d4/b7/6ad4b7464d03ed639269fe6016d1c7e2.jpg'); transform: rotateY(180deg); }
+.page {
+  position: absolute; width: 98%; height: 98%;
+  background: #fffdfa;
+  border-radius: 4px;
+  top:1%; left:1%;
+  z-index:2;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+}
+.page-content {
+  width: 90%; height: 90%;
+  background-color: #fff;
+  border-radius: 10px;
+  text-align:center; padding: 15px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.1);
+}
+.page-content h2 { font-size:20px; color:#ff6f91; margin-bottom:10px; }
+.page-content p { font-size:16px; color:#333; line-height:1.4; }
+.back-cover { background: linear-gradient(135deg, #b19d80, #a28b6c); transform: rotateY(180deg); z-index:1; }
+
+@keyframes openCover { 0% { transform: rotateY(0deg);} 100% { transform: rotateY(-160deg);} }
+@keyframes closeCover { 0% { transform: rotateY(-160deg);} 100% { transform: rotateY(0deg);} }
+
+.mini-game {
+  position: absolute; top:0; left:0;
+  width:100%; height:100vh;
+  background: radial-gradient(circle at center, #fbe6ef, #f8c3d1);
+  display:flex; align-items:center; justify-content:center;
+  flex-direction: column;
+  opacity:0; z-index:1;
+  transition: opacity 1.5s ease;
+}
+.game-banner {
+  background-color: #fff;
+  padding: 20px 30px;
+  border-radius: 20px;
+  box-shadow:0 5px 15px rgba(0,0,0,0.1);
+  text-align:center;
+  max-width:80%;
+}
+.game-banner h2 { color:#ff6f91; margin-bottom:10px; }
+.game-banner p { color:#333; margin-bottom:20px; }
+.game-banner button {
+  background-color:#ff8c94; color:#fff; border:none;
+  padding:10px 20px; border-radius:8px; cursor:pointer;
+  transition:0.3s;
+}
+.game-banner button:hover { background-color:#ff5c5c; }
+.game-area { position: relative; width:100%; height:100%; overflow:hidden; }
+.gift { position:absolute; width:60px; height:60px; cursor:pointer; user-select:none; }
+.gift img { width:100%; height:100%; }
+.gift-message {
+  position:absolute;
+  bottom:70px; left:50%;
+  transform:translateX(-50%);
+  background:#fff; color:#333; padding:6px 10px;
+  border-radius:10px; font-size:14px; white-space:nowrap;
+  box-shadow:0 4px 10px rgba(0,0,0,0.1);
+  opacity:0; animation: fadeIn 0.3s forwards;
+}
+@keyframes fadeIn { from {opacity:0; transform: translate(-50%, -10px);} to {opacity:1; transform: translate(-50%,0);} }
+
+.timer {
+  position:absolute; top:20px; left:50%;
+  transform:translateX(-50%);
+  background: rgba(255,255,255,0.9);
+  color:#ff5c5c; font-weight:bold; padding:8px 15px;
+  border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.15);
+  font-size:18px;
+}
+
+.fade-out-final {
+  animation: fadeOutScreen 2s forwards;
+}
+@keyframes fadeOutScreen { from{opacity:1;} to{opacity:0; background:white;} }
+</style>
+</head>
+<body>
+
+<div class="intro" id="intro">
+  <img src="https://i.pinimg.com/736x/cb/35/b8/cb35b89ca3570d63b68df23260027e5a.jpg" class="intro-character" alt="Character">
+  <div class="banner">
+    <p class="banner-text">Hanako gửi tới cậu một món quà nè 🎁</p>
+    <button id="startBtn">Click vào đây nhaa</button>
+  </div>
+</div>
+
+<div class="main-scene" id="mainScene">
+  <div class="book">
+    <div class="cover-group" id="coverGroup">
+      <div class="front-cover"></div>
+      <div class="inner-front"></div>
+    </div>
+    <div class="page">
+      <div class="page-content">
+        <h2>Chúc mừng 20/10 🌸</h2>
+        <p>Tui gửi đến Htrang một lời chúc nho nhỏ nhân ngày 20/10 nhé.<br><br>
+        Chúc cậu luôn vui vẻ, yêu đời và tận hưởng trọn vẹn những điều tốt đẹp trong cuộc sống.<br><br>
+        Hãy dành thời gian cho bản thân, chăm lo sức khỏe nhiều hơn nữa.<br><br>
+        Mong rằng mọi ngày của Htrang đều ấm áp, đáng nhớ và tràn đầy niềm vui!</p>
+      </div>
+    </div>
+    <div class="back-cover"></div>
+  </div>
+</div> 
+
+<div class="mini-game" id="miniGame">
+  <div class="game-banner" id="gameBanner">
+    <h2>🎁 Minigame nhận quà của Hanako nha 🎁</h2>
+    <p>Cậu có 30 giây để nhấp vào các hộp quà, hãy chú ý trong đó sẽ có những món quà đặc biệt.</p>
+    <button id="playBtn">Bắt đầu</button>
+  </div>
+  <div class="game-area" id="gameArea"></div>
+  <div class="timer" id="timer" style="display:none;">30</div>
+</div>
+
+<svg id="petalIcon" width="20" height="20" viewBox="0 0 64 64" fill="pink" style="display:none;">
+  <path d="M32 2 C40 15, 55 25, 32 62 C9 25, 24 15, 32 2 Z" />
+</svg>
+
+<div id="ending-message"> 
+</div>
+
+<script>
+const startBtn = document.getElementById('startBtn');
+const intro = document.getElementById('intro');
+const mainScene = document.getElementById('mainScene');
+const coverGroup = document.getElementById('coverGroup');
+const miniGame = document.getElementById('miniGame');
+const gameBanner = document.getElementById('gameBanner');
+const playBtn = document.getElementById('playBtn');
+const gameArea = document.getElementById('gameArea');
+const timer = document.getElementById('timer');
+const endingMessage = document.getElementById('ending-message');
+
+// 🌸 Cánh hoa
+function createPetals(container, count){
+  for(let i=0;i<count;i++){
+    const petal = document.getElementById('petalIcon').cloneNode(true);
+    petal.id = '';
+    petal.classList.add('petal');
+    petal.style.display='block';
+    petal.style.left=Math.random()*100+'%';
+    petal.style.top=Math.random()*-15+'vh';
+    petal.style.animationDuration=(8+Math.random()*6)+'s';
+    container.appendChild(petal);
+  }
+}
+createPetals(intro,30);
+createPetals(mainScene,30);
+
+// 🌸 Intro click
+startBtn.addEventListener('click', () => {
+  intro.classList.add('fade-out');
+  setTimeout(()=>{
+    intro.style.display='none';
+    mainScene.style.opacity='1';
+  },1500);
+
+  setTimeout(()=>{ coverGroup.style.animation='openCover 1.5s cubic-bezier(0.25,0.1,0.25,1) forwards'; },2500);
+  setTimeout(()=>{ coverGroup.style.animation='closeCover 1.5s cubic-bezier(0.25,0.1,0.25,1) forwards'; },8500);
+  setTimeout(()=>{ mainScene.style.transition='opacity 2s ease'; mainScene.style.opacity='0'; },10500);
+  setTimeout(()=>{ miniGame.style.opacity='1'; miniGame.style.zIndex='4'; },12500);
+});
+
+// 🎁 MINI GAME
+const messages = [
+  "Hôm trước thấy ní buồn nên tui tạo cái này để động viên ní á :>",
+  "Ngủ sớm đi nhaaa",
+  "Chúc mừng ngày 20/10 thật xinh đẹp",
+  "Bốc trúng secret rùi ní, ib liền nhaaa",
+  "Đẹp gái làm ơn đừng có buồn",
+  "Cậu xứng đáng nhận được 1 bó hoa",
+  "Không đi chơi với tui nữa à",
+  "You trully deserve the best, you know??",
+  "万人的宠爱不如一个人的懂你，万人的追求不如一个人的爱你",
+  "Mùa đông không lạnh!!"
+];
+
+playBtn.addEventListener('click', ()=>{
+  gameBanner.remove();
+  timer.style.display='block';
+  startGame();
+});
+
+function startGame(){
+  let timeLeft=30;
+  timer.textContent=timeLeft;
+  const countdown = setInterval(()=>{
+    timeLeft--;
+    timer.textContent=timeLeft;
+    if(timeLeft<=0){
+      clearInterval(countdown);
+      endGame();
+    }
+  },1000);
+
+  const giftInterval = setInterval(()=>{ spawnGifts(); },2000);
+  setTimeout(()=>{ clearInterval(giftInterval); },30000);
+}
+
+function spawnGifts(){
+  const num = Math.floor(Math.random()*1)+2;
+  for(let i=0;i<num;i++) createGift();
+}
+
+function createGift(){
+  const gift=document.createElement('div');
+  gift.classList.add('gift');
+  gift.style.left=Math.random()*80+10+'%';
+  gift.style.top='-60px';
+  const giftIcons=[
+    "https://cdn-icons-png.flaticon.com/512/1140/1140033.png",
+    "https://cdn-icons-png.flaticon.com/512/3279/3279779.png",
+    "https://cdn-icons-png.flaticon.com/512/9466/9466122.png",
+    "https://cdn-icons-png.flaticon.com/512/8307/8307686.png",
+    "https://cdn-icons-png.flaticon.com/512/3378/3378532.png"
+  ];
+  const randomIcon=giftIcons[Math.floor(Math.random()*giftIcons.length)];
+  const img=document.createElement('img');
+  img.src=randomIcon; img.alt="gift";
+  img.style.width=(Math.random()*20+40)+'px';
+  gift.appendChild(img);
+  gameArea.appendChild(gift);
+
+  let topPos=-60;
+  const speed=1+Math.random()*2;
+  const fall=setInterval(()=>{
+    topPos+=speed;
+    gift.style.top=topPos+'px';
+    if(topPos>window.innerHeight){
+      gift.remove(); clearInterval(fall);
+    }
+  },20);
+
+  gift.addEventListener('click',()=>{
+    if(gift.clicked) return;
+    gift.clicked=true;
+    showMessage(gift);
+  });
+}
+
+function showMessage(gift){
+  const msg=document.createElement('div');
+  msg.classList.add('gift-message');
+  msg.textContent=messages[Math.floor(Math.random()*messages.length)];
+  gift.appendChild(msg);
+  setTimeout(()=>{ msg.remove(); gift.remove(); },4000);
+}
+
+// 🌸 TEXT ENDING
+function endGame(){
+  const gifts=document.querySelectorAll('.gift');
+  gifts.forEach(g=>g.remove());
+  endingMessage.classList.add('show');
+  setTimeout(()=>{ miniGame.classList.add('fade-out-final'); },1000);
+}
+</script>
+</body>
+</html>
